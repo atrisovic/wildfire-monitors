@@ -333,7 +333,7 @@ class MergedExposureDataset:
         self.merged_df["monitors_sqkm"] = self.merged_df["monitor_count"] / self.merged_df["SQKM"] *1000
 
         self.total_population = self.merged_df["POPULATION"].sum()
-        self.merged_df["popw_avg_yrly_smoke_pm"] = self.merged_df["POPULATION"]*5*1000000 / self.total_population
+        self.merged_df["popw_avg_yrly_smoke_pm"] = self.merged_df["POPULATION"]*self.merged_df["avg_yrly_smoke_pm"] / self.total_population
 
         return self.merged_df
 
@@ -361,7 +361,5 @@ class MergedExposureDataset:
             'smoke_pm': ['mean', 'std',],
             'pm25': ['mean', 'std',],
         }).round(2).T
-
-
 
 
