@@ -246,9 +246,14 @@ class MonitorsDataset:
         self.df[self.df["State Code"] != 48].plot(ax=ax, color='darkblue', marker='^', markersize=10)
         sdf = sdf.to_crs(self.shapefile_df.crs)
         sdf.boundary.plot(ax=ax, linewidth=0.3, color="grey")
-        title_text = "GPS Locations in the Western US"
+        title_text = r"Active $PM_{2.5}$ monitoring site locations in 2023"
         wrapped_title = textwrap.fill(title_text, 40)
         ax.set_title(title_text, fontsize=10)
+        
+        # add annotation (A)
+        # ax.annotate('A', xy=(0.5, 0.5), xytext=(0.5, 0.5), textcoords='axes fraction',
+        #             fontsize=10, ha='center', va='center', color='red')
+
         ax.set_axis_off()
 
         plt.tight_layout()
