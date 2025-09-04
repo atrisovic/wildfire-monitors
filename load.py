@@ -121,31 +121,36 @@ class ShapefileDataset:
         return self.df[self.getVitalColumns()]
     
 class MonitorsDataset:
-    def __init__(self, path = None, **kwargs):
-        path = path or MONITORS_PATH
+    def __init__(self, **kwargs):
+        gdf_points = self.loadMonitors()
+        
+        self.shapefile_df = ShapefileDataset().getShapefileDataset()
+
+        self.df = gpd.sjoin(gdf_points, self.shapefile_df, how="inner", predicate="within")
+    
+    def loadMonitors(self):
+        path = MONITORS_PATH
         logger.info(f"Loading MonitorsDataset from path {path}")
         self.df = pd.read_csv(path)
 
-
         df =  self.df.loc[self.df['Parameter Code'] == 88101]
+
         # EPA PM2.5 standard -- most recent
         df =  df.loc[df['Pollutant Standard'] == 'PM25 Annual 2012']
 
         gdf_points = gpd.GeoDataFrame(
             df, 
-            geometry=[Point(xy) for xy in zip(df["Longitude"], 
-                                                df["Latitude"])]
+            geometry=[
+                Point(xy) for xy in zip(
+                    df["Longitude"],df["Latitude"])]
         )
         logger.info(f"Monitors CRS: {gdf_points.Datum.unique()}")
 
         # Set the CRS for the GeoDataFrame based on the most common projection used with these datums
         gdf_points.crs = 'EPSG:4326'  # EPSG:4326 is a common CRS for both WGS84 and NAD83
         gdf_points = gdf_points.to_crs("ESRI:102003") 
-        
-        self.shapefile_df = ShapefileDataset().getShapefileDataset()
+        return gdf_points
 
-        self.df = gpd.sjoin(gdf_points, self.shapefile_df, how="inner", predicate="within")
-    
     def getMonitorsDataset(self):
         return self.df
     
@@ -226,10 +231,11 @@ class MonitorsDataset:
         ret_df["monitor_count"] = ret_df["monitor_count"].fillna(0)
         return ret_df
 
-    def plotMonitors(self):
+    def plotMonitors(self, ax=None, annotation=None):
         sdf = gpd.read_file(STATESHAPEFILE_PATH)
         sdf = sdf[sdf['STUSPS'].isin(['AZ', 'CA', 'CO', 'ID', 'MT', 'NV', 'NM', 'OR', 'UT', 'WA','WY'])]
-        fig, ax = plt.subplots(1, 1, figsize=(3, 3))
+        if ax is None:
+            fig, ax = plt.subplots(1, 1, figsize=(3, 3))
 
         self.shapefile_df.plot(
             #column=x, 
@@ -246,19 +252,17 @@ class MonitorsDataset:
         self.df[self.df["State Code"] != 48].plot(ax=ax, color='darkblue', marker='^', markersize=10)
         sdf = sdf.to_crs(self.shapefile_df.crs)
         sdf.boundary.plot(ax=ax, linewidth=0.3, color="grey")
-        title_text = r"Active $PM_{2.5}$ monitoring site locations in 2023"
+        title_text = r"Active $PM_{2.5}$ monitoring site locations in 2024"
         wrapped_title = textwrap.fill(title_text, 40)
-        ax.set_title(title_text, fontsize=10)
-        
-        # add annotation (A)
-        # ax.annotate('A', xy=(0.5, 0.5), xytext=(0.5, 0.5), textcoords='axes fraction',
-        #             fontsize=10, ha='center', va='center', color='red')
+        ax.set_title(wrapped_title, fontsize=10)
 
         ax.set_axis_off()
 
-        plt.tight_layout()
-        plt.savefig("figures/monitors.png", dpi=300, bbox_inches='tight')
+        if annotation:
+            ax.annotate(annotation, xy=(0.02, 0.02), xycoords="axes fraction", fontsize=12, fontweight="bold")
+        plt.savefig("figures/monitors_2024.png", dpi=300, bbox_inches='tight')
 
+        plt.tight_layout()
         plt.show()
 
 
@@ -269,6 +273,7 @@ class MergedExposureDataset:
         self.cache_dir = cache_dir
         self.smoke_pm_cache = os.path.join(cache_dir, 'smoke_pm_df.pkl')
         self.total_pm25_cache = os.path.join(cache_dir, 'total_pm25_df.pkl')
+        self.total_pm25_epa_cache = os.path.join(cache_dir, 'total_pm25_epa_df.pkl')
         self.urban_rural_cache = os.path.join(cache_dir, 'urban_rural_df.pkl')
         self.shapefile_cache = os.path.join(cache_dir, 'shapefile_df.pkl')
         self.monitors_cache = os.path.join(cache_dir, 'monitors_df.pkl')
@@ -307,6 +312,7 @@ class MergedExposureDataset:
         # Load or generate each dataset
         self.smoke_pm_df = self._load_or_generate(self.smoke_pm_cache, SmokePMDataset().getAggregateExposure, 5)
         self.total_pm25_df = self._load_or_generate(self.total_pm25_cache, TotalPM25Dataset().getAggregateExposure, 5)
+        self.total_pm25_df_epa = self._load_or_generate(self.total_pm25_epa_cache, TotalPM25Dataset().getAggregateExposure, 35)
         self.urban_rural_df = self._load_or_generate(self.urban_rural_cache, UrbanRuralDataset().getUrbanRuralDataset)
         self.shapefile_df = self._load_or_generate(self.shapefile_cache, ShapefileDataset().getShapefileDataset)
         self.monitors_df = self._load_or_generate(self.monitors_cache, MonitorsDataset().getMonitors)
@@ -314,6 +320,7 @@ class MergedExposureDataset:
 
         self.merged_df = (self.smoke_pm_df
                           .join(self.total_pm25_df, lsuffix='_smoke', rsuffix='_total')
+                          .join(self.total_pm25_df_epa, rsuffix='_total')
         )
         logger.info(
             f"Number of unique entries after exposure join: {self.merged_df.shape[0]}")
@@ -366,5 +373,4 @@ class MergedExposureDataset:
             'smoke_pm': ['mean', 'std',],
             'pm25': ['mean', 'std',],
         }).round(2).T
-
 
