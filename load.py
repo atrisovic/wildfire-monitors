@@ -19,23 +19,28 @@ logger = logging.getLogger(name = __name__)
 
 plt.rcParams['font.family'] = 'Times New Roman'
 
-class ExposureDataset:
-    def generateExposureDays(self, treshold):
-        variable_name = f'{self.exposure}_gt_{treshold}'
-        self.df[variable_name] = (self.df[self.exposure]
-                                  .apply(lambda s: True if s >= treshold else False)
-        )
-        return (self.df
-                .groupby(['location_label','year'])[variable_name].sum()
-                .groupby('location_label').mean()
-        ).rename("avg_yrly_"+variable_name)
-    
+class ExposureDataset:    
+    def generateExposureDays(self, threshold):
+        # Create a binary column indicating if exposure exceeds the threshold
+        variable_name = f'{self.exposure}_gt_{threshold}'
+        self.df[variable_name] = self.df[self.exposure] >= threshold
+
+        # Sum of exceedance days per location
+        agg_sum = self.df.groupby('location_label')[variable_name].sum().rename('sum_' + variable_name)
+
+        # Average yearly exceedance days per location
+        yearly_sum = self.df.groupby(['location_label', 'year'])[variable_name].sum()
+        avg_yearly = yearly_sum.groupby('location_label').mean().rename('avg_yrly_' + variable_name)
+
+        # Join average yearly values back to the main DataFrame
+        return agg_sum.to_frame().join(avg_yearly.to_frame())
+
     def getMeanAnnualAverage(self):
         return (self.df
                 .groupby(['location_label','year'])[self.exposure].mean()
                 .groupby('location_label').mean()
         ).rename(f"avg_yrly_{self.exposure}")
-    
+
     def getAggregateExposure(self, treshold):
         variable_name = f'{self.exposure}_gt_{treshold}'
         return (
