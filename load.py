@@ -42,9 +42,8 @@ class ExposureDataset:
         ).rename(f"avg_yrly_{self.exposure}")
 
     def getAggregateExposure(self, treshold):
-        variable_name = f'{self.exposure}_gt_{treshold}'
         return (
-            pd.concat([self.generateExposureDays(treshold), 
+            pd.concat([self.generateExposureDays(treshold),
                        self.getMeanAnnualAverage()], axis=1)
         )
 
