@@ -1,20 +1,25 @@
 cff-version: 1.2.0
 message: "If you use this code, please cite the article below."
-# TODO(authors): fill in the title and the full, ordered author list before publishing.
-title: "Code for: TODO-PAPER-TITLE"
+title: "Code for: Nearly a Third of Western US Wildfire Smoke Exposure Occurs Far from Regulatory PM2.5 Monitors"
 type: software
 license: MIT
 repository-code: "https://github.com/atrisovic/wildfire-monitors"
 authors:
-  - family-names: Trisovic
+  - family-names: Hu
+    given-names: Jie
+  - family-names: Trišović
     given-names: Ana
-  # TODO(authors): co-authors
+  - family-names: Casey
+    given-names: Joan
 preferred-citation:
   type: article
-  title: "TODO-PAPER-TITLE"
+  title: "Nearly a Third of Western US Wildfire Smoke Exposure Occurs Far from Regulatory PM2.5 Monitors"
   journal: "Environmental Health Perspectives"
   notes: "Submitted"
   authors:
-    - family-names: Trisovic
+    - family-names: Hu
+      given-names: Jie
+    - family-names: Trišović
       given-names: Ana
-    # TODO(authors): co-authors
+    - family-names: Casey
+      given-names: Joan

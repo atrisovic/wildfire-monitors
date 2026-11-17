@@ -7,7 +7,8 @@ PM2.5 and all-source PM2.5 for 2006–2020 with the 2025 monitoring network, and
 smoke exposure, high-pollution exposure, and population lies far from the nearest monitoring
 site. It also ranks tracts by monitoring priority and compares urban and rural coverage by state.
 
-**Citation.** TODO-AUTHORS. TODO-PAPER-TITLE. *Environmental Health Perspectives* (submitted).
+**Citation.** Hu J, Trišović A, Casey J. Nearly a Third of Western US Wildfire Smoke Exposure Occurs
+Far from Regulatory PM<sub>2.5</sub> Monitors. *Environmental Health Perspectives* (submitted).
 See `CITATION.cff`.
 
 ## Quick start
@@ -94,8 +95,8 @@ number changes.
 | `pm25/allsource_pm25_tract_daily.parquet` | Swanson et al. (2022), *Sci Data* 9:466, doi:10.1038/s41597-022-01488-y, daily 1-km PM2.5 averaged to tracts, converted with `preprocessing/allsource_pm25_to_tract_parquet.py` | through 2020-12-14; built 2023 |
 
 The snapshot and processed files that cannot be downloaded from their original sources (AQS
-snapshot, tract shapefile export, and the two daily tract-level PM2.5 files) are to be deposited
-with the paper: TODO(authors) deposit DOI. Upstream code by Childs et al. is at
+snapshot, tract shapefile export, and the two daily tract-level PM2.5 files) will be added to
+Harvard Dataverse, doi:10.7910/DVN/9VDUAP. Upstream code by Childs et al. is at
 <https://github.com/echolab-stanford/daily-10km-smokePM>.
 
 ## License

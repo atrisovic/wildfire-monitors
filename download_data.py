@@ -17,10 +17,10 @@ import zipfile
 
 import config
 
-# Deposit holding the processed inputs below that are not otherwise public.
-# TODO(authors): set once the deposit exists. doi:10.7910/DVN/9VDUAP is the co-exposure
-# project's deposit and does not contain these files.
-PROCESSED_DEPOSIT = None
+# Deposit for the processed inputs below that are not otherwise public. For now this is the
+# companion co-exposure project's dataset; the files will be added there (or to a new dataset
+# for this paper), and this line updated.
+PROCESSED_DEPOSIT = "Harvard Dataverse, doi:10.7910/DVN/9VDUAP"
 
 INPUTS = [
     {
@@ -142,7 +142,7 @@ def main():
     for item in missing:
         print(f"\n{item['path']}\n  {item['what']}\n  {item['manual']}")
         if item.get("deposit"):
-            print(f"  Authors' deposit: {PROCESSED_DEPOSIT or 'TODO (not yet published)'}")
+            print(f"  Authors' deposit: {PROCESSED_DEPOSIT}")
     for item in mismatched:
         print(f"\n{item['path']} differs from the version used in the letter "
               f"(expected sha256 {item['sha256'][:12]}...). Results may differ.")
