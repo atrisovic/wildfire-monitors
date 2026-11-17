@@ -1,0 +1,15 @@
+# OS / editor / Python
+.DS_Store
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+
+# inputs (see download_data.py) and regenerated caches
+data/
+cache/
+
+# local-only: upstream Childs et al. scripts and large intermediate files
+smoke_pm/
+
+# local backups made during cleanup
+_backup/

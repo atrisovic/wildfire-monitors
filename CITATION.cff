@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the article below."
+# TODO(authors): fill in the title and the full, ordered author list before publishing.
+title: "Code for: TODO-PAPER-TITLE"
+type: software
+license: MIT
+repository-code: "https://github.com/atrisovic/wildfire-monitors"
+authors:
+  - family-names: Trisovic
+    given-names: Ana
+  # TODO(authors): co-authors
+preferred-citation:
+  type: article
+  title: "TODO-PAPER-TITLE"
+  journal: "Environmental Health Perspectives"
+  notes: "Submitted"
+  authors:
+    - family-names: Trisovic
+      given-names: Ana
+    # TODO(authors): co-authors

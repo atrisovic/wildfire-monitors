@@ -1,0 +1,15 @@
+network,measure,beyond_10km,beyond_25km,beyond_50km
+Regulatory (88101),Smoke person-days,56.85,30.14,17.11
+Regulatory (88101),Residents,55.98,26.48,14.25
+Regulatory (88101),All high-pollution person-days,40.49,18.66,10.22
+Regulatory (88101),Non-smoke high-pollution person-days (b),24.71,5.13,1.86
+Regulatory (88101),Non-smoke high-pollution person-days (a),27.92,8.06,3.95
+Regulatory (88101),Ratio: smoke / non-smoke (b),2.3,5.87,9.18
+Regulatory (88101),Ratio: smoke / non-smoke (a),2.04,3.74,4.33
+Regulatory + AQI-only (88101 + 88502),Smoke person-days,48.66,23.52,11.68
+Regulatory + AQI-only (88101 + 88502),Residents,49.09,21.57,10.72
+Regulatory + AQI-only (88101 + 88502),All high-pollution person-days,35.2,14.78,7.18
+Regulatory + AQI-only (88101 + 88502),Non-smoke high-pollution person-days (b),23.22,4.53,1.58
+Regulatory + AQI-only (88101 + 88502),Non-smoke high-pollution person-days (a),25.58,6.68,3.02
+Regulatory + AQI-only (88101 + 88502),Ratio: smoke / non-smoke (b),2.1,5.2,7.38
+Regulatory + AQI-only (88101 + 88502),Ratio: smoke / non-smoke (a),1.9,3.52,3.87
